@@ -58,4 +58,10 @@ public class ProdutoResource {
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
 	}
+	
+	@RequestMapping(value = "/{codigo}/{qtde}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> updateEstoque(@PathVariable Integer codigo, @PathVariable Double qtde) {
+		service.updateEstoque(codigo, qtde);
+		return ResponseEntity.noContent().build();
+	}
 }

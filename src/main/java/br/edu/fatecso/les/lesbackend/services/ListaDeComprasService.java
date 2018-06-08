@@ -44,4 +44,8 @@ public class ListaDeComprasService {
 		newObj.setProduto(obj.getProduto());
 		newObj.setClientes(obj.getClientes());
 	}
+	
+	public ListaDeCompras findByProduto(Integer codigo) {
+		return repo.findByProduto(codigo);
+	}
 }

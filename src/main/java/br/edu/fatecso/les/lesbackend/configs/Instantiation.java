@@ -59,7 +59,7 @@ public class Instantiation implements CommandLineRunner{
 		Produto p7 = new Produto(1006, "Borracha", 0.86, 1.80, 0.00, 0.00);
 		Produto p8 = new Produto(1007, "Caderneta", 2.50, 5.00, 0.00, 0.00);
 		
-		produtoRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6));
+		produtoRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8));
 		
 		ListaDeCompras lista1 = new ListaDeCompras(null, p7);
 		ListaDeCompras lista2 = new ListaDeCompras(null, p8);

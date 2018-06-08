@@ -33,6 +33,10 @@ public class ItemPedido implements Serializable{
 	public void setProduto(Produto produto) {
 		this.produto = produto;
 	}
+	
+	public Double getSubTotal() {
+		return produto.getValorVenda() * quantidade;
+	}
 
 	@Override
 	public int hashCode() {

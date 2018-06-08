@@ -70,6 +70,27 @@ public class Pedido implements Serializable{
 	public void setPagamentos(List<Pagamento> pagamentos) {
 		this.pagamentos = pagamentos;
 	}
+	
+	public Double getTotal() {
+		Double total = 0.00;
+		for (ItemPedido ip : getItens()) {
+			total = total + ip.getSubTotal();
+		}
+		return total;
+	}
+	
+	public Double getTroco() {
+		Double valorTotalDado = 0.00;
+		for (Pagamento pg : getPagamentos()) {
+			if (pg instanceof PagamentoComDinheiro) {
+				valorTotalDado = valorTotalDado + ((PagamentoComDinheiro) pg).getValor();
+			}
+			if (pg instanceof PagamentoComCartao) {
+				valorTotalDado = valorTotalDado + ((PagamentoComCartao) pg).getValor();
+			}
+		}
+		return valorTotalDado - getTotal();
+	}
 
 	@Override
 	public int hashCode() {
