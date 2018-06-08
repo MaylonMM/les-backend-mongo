@@ -1,6 +1,7 @@
 package br.edu.fatecso.les.lesbackend.resources;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.edu.fatecso.les.lesbackend.domain.Cliente;
+import br.edu.fatecso.les.lesbackend.dto.ClienteDTO;
 import br.edu.fatecso.les.lesbackend.services.ClienteService;
 
 @RestController
@@ -19,8 +21,9 @@ public class ClienteResource {
 	private ClienteService service;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<Cliente>> findAll() {
+	public ResponseEntity<List<ClienteDTO>> findAll() {
 		List<Cliente> list = service.findAll();
-		return ResponseEntity.ok().body(list);
+		List<ClienteDTO> listDto = list.stream().map(x -> new ClienteDTO(x)).collect(Collectors.toList());
+		return ResponseEntity.ok().body(listDto);
 	}
 }
