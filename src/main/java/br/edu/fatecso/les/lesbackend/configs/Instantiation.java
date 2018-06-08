@@ -1,5 +1,6 @@
 package br.edu.fatecso.les.lesbackend.configs;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,11 +8,17 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
 import br.edu.fatecso.les.lesbackend.domain.Cliente;
+import br.edu.fatecso.les.lesbackend.domain.ItemPedido;
 import br.edu.fatecso.les.lesbackend.domain.ListaDeCompras;
+import br.edu.fatecso.les.lesbackend.domain.PagamentoComCartao;
+import br.edu.fatecso.les.lesbackend.domain.PagamentoComDinheiro;
+import br.edu.fatecso.les.lesbackend.domain.Pedido;
 import br.edu.fatecso.les.lesbackend.domain.Produto;
+import br.edu.fatecso.les.lesbackend.domain.enums.TipoPagamento;
 import br.edu.fatecso.les.lesbackend.dto.ClienteListaDTO;
 import br.edu.fatecso.les.lesbackend.repositories.ClienteRepository;
 import br.edu.fatecso.les.lesbackend.repositories.ListaDeComprasRepository;
+import br.edu.fatecso.les.lesbackend.repositories.PedidoRepository;
 import br.edu.fatecso.les.lesbackend.repositories.ProdutoRepository;
 
 @Configuration
@@ -23,12 +30,15 @@ public class Instantiation implements CommandLineRunner{
 	private ProdutoRepository produtoRepository;
 	@Autowired
 	private ListaDeComprasRepository listaDeComprasRepository;
+	@Autowired
+	private PedidoRepository pedidoRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
 		clienteRepository.deleteAll();
 		produtoRepository.deleteAll();
 		listaDeComprasRepository.deleteAll();
+		pedidoRepository.deleteAll();
 		
 		Cliente c1 = new Cliente(null, "Maria da Silva", "maria@gmail.com", "30356874");
 		Cliente c2 = new Cliente(null, "José Cravo", "jose@gmail.com", "998305687");
@@ -52,7 +62,20 @@ public class Instantiation implements CommandLineRunner{
 		lista2.getClientes().add(new ClienteListaDTO(c2));
 		
 		listaDeComprasRepository.saveAll(Arrays.asList(lista1, lista2));
+		
+		ItemPedido item1 = new ItemPedido(3.00, p1);
+		ItemPedido item2 = new ItemPedido(1.00, p4);
+		ItemPedido item3 = new ItemPedido(1.00, p5);
+		
+		PagamentoComDinheiro pg1 = new PagamentoComDinheiro(null, 50.00);
+		PagamentoComCartao pg2 = new PagamentoComCartao(null, TipoPagamento.CREDITO, 1, 58.70);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		
+		Pedido ped1 = new Pedido(null, sdf.parse(sdf.format(System.currentTimeMillis())), false);
+		ped1.getItens().addAll(Arrays.asList(item1, item2, item3));
+		ped1.getPagamentos().addAll(Arrays.asList(pg1, pg2));
+		
+		pedidoRepository.saveAll(Arrays.asList(ped1));
 	}
-	
-	
 }
