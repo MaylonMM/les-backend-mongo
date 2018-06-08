@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import br.edu.fatecso.les.lesbackend.domain.Cliente;
 import br.edu.fatecso.les.lesbackend.domain.ItemPedido;
 import br.edu.fatecso.les.lesbackend.domain.ListaDeCompras;
+import br.edu.fatecso.les.lesbackend.domain.Pagamento;
 import br.edu.fatecso.les.lesbackend.domain.PagamentoComCartao;
 import br.edu.fatecso.les.lesbackend.domain.PagamentoComDinheiro;
 import br.edu.fatecso.les.lesbackend.domain.Pedido;
@@ -18,6 +19,7 @@ import br.edu.fatecso.les.lesbackend.domain.enums.TipoPagamento;
 import br.edu.fatecso.les.lesbackend.dto.ClienteListaDTO;
 import br.edu.fatecso.les.lesbackend.repositories.ClienteRepository;
 import br.edu.fatecso.les.lesbackend.repositories.ListaDeComprasRepository;
+import br.edu.fatecso.les.lesbackend.repositories.PagamentoRepository;
 import br.edu.fatecso.les.lesbackend.repositories.PedidoRepository;
 import br.edu.fatecso.les.lesbackend.repositories.ProdutoRepository;
 
@@ -32,6 +34,8 @@ public class Instantiation implements CommandLineRunner{
 	private ListaDeComprasRepository listaDeComprasRepository;
 	@Autowired
 	private PedidoRepository pedidoRepository;
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -39,6 +43,7 @@ public class Instantiation implements CommandLineRunner{
 		produtoRepository.deleteAll();
 		listaDeComprasRepository.deleteAll();
 		pedidoRepository.deleteAll();
+		pagamentoRepository.deleteAll();
 		
 		Cliente c1 = new Cliente(null, "Maria da Silva", "maria@gmail.com", "30356874");
 		Cliente c2 = new Cliente(null, "José Cravo", "jose@gmail.com", "998305687");
@@ -67,8 +72,10 @@ public class Instantiation implements CommandLineRunner{
 		ItemPedido item2 = new ItemPedido(1.00, p4);
 		ItemPedido item3 = new ItemPedido(1.00, p5);
 		
-		PagamentoComDinheiro pg1 = new PagamentoComDinheiro(null, 50.00);
-		PagamentoComCartao pg2 = new PagamentoComCartao(null, TipoPagamento.CREDITO, 1, 58.70);
+		Pagamento pg1 = new PagamentoComDinheiro(null, 50.00);
+		Pagamento pg2 = new PagamentoComCartao(null, TipoPagamento.CREDITO, 1, 58.70);
+		
+		pagamentoRepository.saveAll(Arrays.asList(pg1, pg2));
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		

@@ -1,5 +1,8 @@
 package br.edu.fatecso.les.lesbackend.domain;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
+@JsonTypeName("PagamentoComDinheiro")
 public class PagamentoComDinheiro extends Pagamento {
 	private static final long serialVersionUID = 1L;
 	

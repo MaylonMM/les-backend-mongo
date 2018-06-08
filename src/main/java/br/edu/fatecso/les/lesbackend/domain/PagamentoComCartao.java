@@ -1,7 +1,10 @@
 package br.edu.fatecso.les.lesbackend.domain;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import br.edu.fatecso.les.lesbackend.domain.enums.TipoPagamento;
 
+@JsonTypeName("PagamentoComCartao")
 public class PagamentoComCartao extends Pagamento {
 	private static final long serialVersionUID = 1L;
 	
