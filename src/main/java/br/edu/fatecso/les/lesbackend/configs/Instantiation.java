@@ -88,7 +88,7 @@ public class Instantiation implements CommandLineRunner{
 		
 		Pagamento pg4 = new PagamentoComDinheiro(null, 10.40);
 		
-		Pagamento pg5 = new PagamentoComDinheiro(null, 30.00);
+		Pagamento pg5 = new PagamentoComDinheiro(null, 100.00);
 		
 		pagamentoRepository.saveAll(Arrays.asList(pg1, pg2, pg3, pg4, pg5));
 		

@@ -33,7 +33,7 @@ public class FaturamentoService {
 		for (Pedido ped : list) {
 			if (!ped.getOrcamento()) {
 				total = total + ped.getTotal();
-				
+				totalDinheiro = totalDinheiro - ped.getTroco();
 				for (Pagamento pg : ped.getPagamentos()) {
 					if (pg instanceof PagamentoComDinheiro) {
 						totalDinheiro = totalDinheiro + ((PagamentoComDinheiro) pg).getValor();
