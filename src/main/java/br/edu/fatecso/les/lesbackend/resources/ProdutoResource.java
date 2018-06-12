@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.edu.fatecso.les.lesbackend.domain.Produto;
+import br.edu.fatecso.les.lesbackend.dto.ItemPedidoDTO;
 import br.edu.fatecso.les.lesbackend.dto.ProdutoDTO;
+import br.edu.fatecso.les.lesbackend.dto.ProdutoInclusoDTO;
 import br.edu.fatecso.les.lesbackend.services.ProdutoService;
 
 @RestController
@@ -59,9 +61,9 @@ public class ProdutoResource {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@RequestMapping(value = "/{codigo}/{qtde}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> updateEstoque(@PathVariable Integer codigo, @PathVariable Double qtde) {
-		service.updateEstoque(codigo, qtde);
-		return ResponseEntity.noContent().build();
+	@RequestMapping(value = "/entrada", method = RequestMethod.PUT)
+	public ResponseEntity<ProdutoInclusoDTO> updateEstoque(@RequestBody ItemPedidoDTO objDto) {
+		ProdutoInclusoDTO obj = service.updateEstoque(objDto.getCodigo(), objDto.getQuantidade());
+		return ResponseEntity.ok().body(obj);
 	}
 }

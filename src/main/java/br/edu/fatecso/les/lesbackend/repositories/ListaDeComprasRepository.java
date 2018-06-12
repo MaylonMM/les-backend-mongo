@@ -10,5 +10,5 @@ import br.edu.fatecso.les.lesbackend.domain.ListaDeCompras;
 public interface ListaDeComprasRepository extends MongoRepository<ListaDeCompras, String> {
 	
 	@Query("{ 'produto.codigo' : ?0 }")
-	ListaDeCompras findByProduto(Integer codigo);
+	ListaDeCompras findByProdutoCodigo(Integer codigo);
 }

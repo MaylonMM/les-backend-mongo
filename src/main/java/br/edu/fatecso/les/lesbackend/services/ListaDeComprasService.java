@@ -46,6 +46,6 @@ public class ListaDeComprasService {
 	}
 	
 	public ListaDeCompras findByProduto(Integer codigo) {
-		return repo.findByProduto(codigo);
+		return repo.findByProdutoCodigo(codigo);
 	}
 }

@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import br.edu.fatecso.les.lesbackend.domain.ListaDeCompras;
 import br.edu.fatecso.les.lesbackend.domain.Produto;
-import br.edu.fatecso.les.lesbackend.dto.ClienteListaDTO;
 import br.edu.fatecso.les.lesbackend.dto.ProdutoDTO;
+import br.edu.fatecso.les.lesbackend.dto.ProdutoInclusoDTO;
 import br.edu.fatecso.les.lesbackend.repositories.ProdutoRepository;
 import br.edu.fatecso.les.lesbackend.services.exceptions.ObjectNotFoundException;
 
@@ -55,10 +55,10 @@ public class ProdutoService {
 	}
 	
 
-	public Produto updateEstoque(Integer cod, Double qtde) {
+	public ProdutoInclusoDTO updateEstoque(Integer cod, Double qtde) {
 		Produto obj = findById(cod);
-		acrescentarEstoque(obj, qtde);
-		return obj;
+		ProdutoInclusoDTO objDto = acrescentarEstoque(obj, qtde);
+		return objDto;
 	}
 
 	public Produto fromDTO(ProdutoDTO objDto) {
@@ -74,25 +74,27 @@ public class ProdutoService {
 		}
 	}
 
-	public void acrescentarEstoque(Produto obj, Double quantidade) {
+	public ProdutoInclusoDTO acrescentarEstoque(Produto obj, Double quantidade) {
 		obj.setQtdeEstoque(obj.getQtdeEstoque() + quantidade);
 		obj = repo.save(obj);
 		
-		if (obj.getQtdeEstoque() - quantidade <= obj.getEsqueMin() && obj.getQtdeEstoque() > obj.getEsqueMin()) {
-			System.out.println("\nO estoque voltou!\n");
-			
-			ListaDeCompras lista = listaDeComprasService.findByProduto(obj.getCodigo());
-			System.out.println("Produto: " + lista.getProduto().getDescricao());
-			if (lista.getClientes() == null) {
-				System.out.println("Não existem clientes que pediram esse item.");
-			} else {
-				System.out.println("Clientes que pediram o item:");
-				for (ClienteListaDTO c : lista.getClientes()) {
-					System.out.println("Nome: " + c.getNome() + " || Telefone: " + c.getTelefone() + " || Email: " + c.getEmail());
-				}
-			}
-			
+		ProdutoInclusoDTO objDto = new ProdutoInclusoDTO();
+		ListaDeCompras lista = listaDeComprasService.findByProduto(obj.getCodigo());
+		
+		objDto.setProduto(new ProdutoDTO(obj));
+		if (lista != null && !lista.getClientes().isEmpty()) {
+			objDto.setClientes(lista.getClientes());
 		}
+		if (obj.getQtdeEstoque() - quantidade <= obj.getEsqueMin() && obj.getQtdeEstoque() > obj.getEsqueMin()) {
+			objDto.setMensagem("O estoque deste produto voltou a ficar acima do estoque mínimo");
+			if (lista != null && lista.getClientes().isEmpty()) {
+				listaDeComprasService.delete(lista.getId());
+			}
+		} else {
+			objDto.setMensagem("O estoque deste produto foi acrescentado");
+		}
+		
+		return objDto;
 	}
 
 }
